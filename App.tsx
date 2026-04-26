@@ -4,6 +4,7 @@ import Header from './components/Header';
 import StatsPanel from './components/StatsPanel';
 import FilterPanel from './components/FilterPanel';
 import ResultsTable from './components/ResultsTable';
+import AuthGate from './components/AuthGate';
 import { DomainEntry, DictionaryStats, FilterState, AnalysisResult } from './types';
 import { parseDomains, applyFilters } from './utils/filterUtils';
 import { 
@@ -164,4 +165,10 @@ function App() {
   );
 }
 
-export default App;
+const AppWithAuth: React.FC = () => (
+  <AuthGate>
+    <App />
+  </AuthGate>
+);
+
+export default AppWithAuth;

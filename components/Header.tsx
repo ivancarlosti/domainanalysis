@@ -2,6 +2,7 @@
 import React from 'react';
 import { ExternalLink, Moon, Sun, LogOut } from 'lucide-react';
 import { Language, translations } from '../constants/translations';
+import { useAuth } from './AuthGate';
 
 interface HeaderProps {
   currentDate: string;
@@ -13,6 +14,8 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ currentDate, isDarkMode, toggleTheme, language, setLanguage }) => {
   const t = translations[language];
+  const { config, logout } = useAuth();
+  const showLogout = config.authMethod !== 'none';
 
   return (
     <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
@@ -52,9 +55,14 @@ const Header: React.FC<HeaderProps> = ({ currentDate, isDarkMode, toggleTheme, l
           <a href="https://registro.br/tecnologia/ferramentas/whois/" target="_blank" rel="noreferrer" className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition-colors">
             <ExternalLink size={12} /> {t.whois}
           </a>
-          <button className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors">
-            <LogOut size={12} /> {t.exit}
-          </button>
+          {showLogout && (
+            <button
+              onClick={logout}
+              className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors"
+            >
+              <LogOut size={12} /> {t.exit}
+            </button>
+          )}
         </div>
       </div>
 

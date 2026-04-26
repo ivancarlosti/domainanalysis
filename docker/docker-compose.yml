@@ -1,0 +1,11 @@
+services:
+  domainanalysis:
+    image: ghcr.io/ivancarlosti/domainanalysis:latest
+    container_name: domainanalysis
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      PORT: 3000
+    ports:
+      - "${PORT:-8080}:3000"

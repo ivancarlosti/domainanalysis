@@ -1,0 +1,5 @@
+{
+  "name": "Filtrador de Domínios BR",
+  "description": "Ferramenta avançada para filtrar e analisar listas de domínios em processo de liberação (registro.br), com integração de IA para análise de valor.",
+  "requestFramePermissions": []
+}

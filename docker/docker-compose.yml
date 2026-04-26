@@ -1,3 +1,5 @@
+name: domainanalysis
+
 services:
   domainanalysis:
     image: ghcr.io/ivancarlosti/domainanalysis:latest

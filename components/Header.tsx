@@ -71,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ currentDate, isDarkMode, toggleTheme, l
         <h1 className="text-3xl font-normal text-gray-700 dark:text-gray-100 mb-2 tracking-wide uppercase">{t.title}</h1>
         
         <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">
-          {t.subtitle} <a href="https://registro.br/dominio/processo-de-liberacao/" target="_blank" rel="noreferrer" className="underline hover:text-green-600">aqui</a>.
+           <a href="https://registro.br/dominio/processo-de-liberacao/" target="_blank" rel="noreferrer" className="underline hover:text-green-600">{t.subtitle}</a>.
         </p>
         <h2 className="text-2xl text-gray-600 dark:text-gray-300 mt-4">{currentDate}</h2>
       </div>

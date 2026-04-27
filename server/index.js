@@ -3,7 +3,6 @@ import cookieParser from 'cookie-parser';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { GoogleGenAI, Type } from '@google/genai';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,7 +23,6 @@ const KEYCLOAK_CLIENT_SECRET = process.env.KEYCLOAK_CLIENT_SECRET || '';
 const KEYCLOAK_REDIRECT_URI = (process.env.KEYCLOAK_REDIRECT_URI || '').replace(/\/+$/, '');
 const KEYCLOAK_EMAIL_ACCOUNT = process.env.KEYCLOAK_EMAIL_ACCOUNT || '';
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
 
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24;
@@ -75,14 +73,6 @@ function safeEqual(a, b) {
   const bb = Buffer.from(b);
   if (ab.length !== bb.length) return false;
   return crypto.timingSafeEqual(ab, bb);
-}
-
-function requireAuth(req, res, next) {
-  if (AUTH_METHOD === 'none') return next();
-  const sess = getSession(req);
-  if (!sess) return res.status(401).json({ error: 'unauthorized' });
-  req.session = sess;
-  next();
 }
 
 app.get('/api/config', (_req, res) => {
@@ -209,51 +199,6 @@ app.get('/api/auth/keycloak/callback', async (req, res) => {
   } catch (err) {
     console.error('Keycloak callback error', err);
     res.status(500).send('callback-error');
-  }
-});
-
-app.post('/api/analyze', requireAuth, async (req, res) => {
-  if (!GEMINI_API_KEY) return res.status(503).json({ error: 'gemini-not-configured' });
-  const domains = Array.isArray(req.body?.domains) ? req.body.domains : null;
-  if (!domains) return res.status(400).json({ error: 'invalid-body' });
-
-  const list = domains.slice(0, 30).map(String);
-  const prompt = `
-    Analyze the following list of domains. For each domain, provide:
-    1. A short analysis of its potential use (brandable, SEO, generic, etc.).
-    2. A likely category (Tech, Commerce, Personal, etc.).
-    3. A valuation rating (Low, Medium, High).
-
-    List: ${list.join(', ')}
-  `;
-
-  try {
-    const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-    const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
-      contents: prompt,
-      config: {
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: Type.ARRAY,
-          items: {
-            type: Type.OBJECT,
-            properties: {
-              domain: { type: Type.STRING },
-              analysis: { type: Type.STRING },
-              category: { type: Type.STRING },
-              valuation: { type: Type.STRING }
-            },
-            required: ['domain', 'analysis', 'category', 'valuation']
-          }
-        }
-      }
-    });
-    const parsed = response.text ? JSON.parse(response.text) : [];
-    res.json({ results: parsed });
-  } catch (err) {
-    console.error('Gemini error', err);
-    res.status(502).json({ error: 'gemini-failed' });
   }
 });
 

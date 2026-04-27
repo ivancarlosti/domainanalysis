@@ -4,8 +4,6 @@ export interface DomainEntry {
   hasNumbers: boolean;
   hasHyphen: boolean;
   extension: string;
-  score?: number; // AI Score
-  aiAnalysis?: string; // AI Analysis
 }
 
 export interface DictionaryStats {
@@ -25,7 +23,7 @@ export interface FilterState {
   threeCharsNoNum: boolean;
   fourToFifteenPt: boolean;
   fourToFifteenEn: boolean;
-  
+
   // Specific Categories
   cities: boolean;
   animals: boolean;
@@ -40,14 +38,7 @@ export interface FilterState {
   extBlogBr: boolean;
   extArtBr: boolean;
   extLojaBr: boolean;
-  
+
   // Custom
   keyword: string;
-}
-
-export interface AnalysisResult {
-  domain: string;
-  analysis: string;
-  category: string;
-  valuation: string;
 }

@@ -5,18 +5,17 @@ import StatsPanel from './components/StatsPanel';
 import FilterPanel from './components/FilterPanel';
 import ResultsTable from './components/ResultsTable';
 import AuthGate from './components/AuthGate';
-import { DomainEntry, DictionaryStats, FilterState, AnalysisResult } from './types';
+import { DomainEntry, DictionaryStats, FilterState } from './types';
 import { parseDomains, applyFilters } from './utils/filterUtils';
-import { 
-  MOCK_PT_DICT, 
-  MOCK_EN_DICT, 
-  MOCK_CITIES, 
-  MOCK_ANIMALS, 
+import {
+  MOCK_PT_DICT,
+  MOCK_EN_DICT,
+  MOCK_CITIES,
+  MOCK_ANIMALS,
   MOCK_NAMES,
   MOCK_SURNAMES,
-  SAMPLE_DOMAINS_TXT 
+  SAMPLE_DOMAINS_TXT
 } from './constants';
-import { analyzeDomainsWithGemini } from './services/geminiService';
 import { Language } from './constants/translations';
 
 const INITIAL_FILTER_STATE: FilterState = {
@@ -63,10 +62,6 @@ function App() {
     names: MOCK_NAMES.size + MOCK_SURNAMES.size
   });
 
-  // AI Analysis State
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResults, setAnalysisResults] = useState<AnalysisResult[]>([]);
-
   // Theme logic - CRITICAL for Tailwind 'class' strategy
   useEffect(() => {
     const root = window.document.documentElement;
@@ -97,29 +92,11 @@ function App() {
   const executeFilter = () => {
     const results = applyFilters(rawDomains, filters);
     setFilteredDomains(results);
-    setAnalysisResults([]); // Reset AI results on new filter
   };
 
   const clearFilters = () => {
     setFilters(INITIAL_FILTER_STATE);
     setFilteredDomains([]);
-    setAnalysisResults([]);
-  };
-
-  const handleGeminiAnalysis = async () => {
-    if (filteredDomains.length === 0) return;
-    
-    setIsAnalyzing(true);
-    try {
-      const domainStrings = filteredDomains.map(d => d.name);
-      const results = await analyzeDomainsWithGemini(domainStrings);
-      setAnalysisResults(results);
-    } catch (e) {
-      console.error("Failed to analyze", e);
-      alert("Erro ao conectar com Gemini API.");
-    } finally {
-      setIsAnalyzing(false);
-    }
   };
 
   const currentDate = new Date().toLocaleString(language, { month: 'long', year: 'numeric' });
@@ -153,11 +130,8 @@ function App() {
           language={language}
         />
 
-        <ResultsTable 
+        <ResultsTable
           domains={filteredDomains}
-          onAnalyze={handleGeminiAnalysis}
-          isAnalyzing={isAnalyzing}
-          analysisResults={analysisResults}
           language={language}
         />
       </main>

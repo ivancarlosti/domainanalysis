@@ -27,21 +27,21 @@ const Header: React.FC<HeaderProps> = ({ currentDate, isDarkMode, toggleTheme, l
             className={`px-2 py-1 rounded flex items-center gap-1 transition-colors ${language === 'en-US' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
             title="English (US)"
           >
-            <span className="text-base">🇺🇸</span> <span className="hidden sm:inline">English</span>
+            <img src="https://flagcdn.com/w20/us.png" srcSet="https://flagcdn.com/w40/us.png 2x" width="20" height="15" alt="US" className="rounded-sm" /> <span className="hidden sm:inline">English</span>
           </button>
           <button 
             onClick={() => setLanguage('pt-BR')}
             className={`px-2 py-1 rounded flex items-center gap-1 transition-colors ${language === 'pt-BR' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
             title="Português (BR)"
           >
-            <span className="text-base">🇧🇷</span> <span className="hidden sm:inline">Português</span>
+            <img src="https://flagcdn.com/w20/br.png" srcSet="https://flagcdn.com/w40/br.png 2x" width="20" height="15" alt="BR" className="rounded-sm" /> <span className="hidden sm:inline">Português</span>
           </button>
           <button 
             onClick={() => setLanguage('es-MX')}
             className={`px-2 py-1 rounded flex items-center gap-1 transition-colors ${language === 'es-MX' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
             title="Español (MX)"
           >
-            <span className="text-base">🇲🇽</span> <span className="hidden sm:inline">Español</span>
+            <img src="https://flagcdn.com/w20/mx.png" srcSet="https://flagcdn.com/w40/mx.png 2x" width="20" height="15" alt="MX" className="rounded-sm" /> <span className="hidden sm:inline">Español</span>
           </button>
         </div>
         

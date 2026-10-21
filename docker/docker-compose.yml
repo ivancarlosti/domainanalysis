@@ -5,6 +5,7 @@ services:
     image: ghcr.io/ivancarlosti/domainanalysis:latest
     container_name: domainanalysis
     restart: unless-stopped
+    # Create the environment file first: cp .env.example .env
     env_file:
       - .env
     environment:

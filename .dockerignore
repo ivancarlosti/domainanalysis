@@ -7,3 +7,8 @@ docker
 .idea
 *.log
 .DS_Store
+
+# Never bake real credentials into the build context
+.env
+.env.*
+!.env.example

@@ -1,5 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import { rateLimit } from 'express-rate-limit';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -7,8 +8,18 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+function envInt(name, fallback) {
+  const value = parseInt(process.env[name] || '', 10);
+  return Number.isFinite(value) && value > 0 ? value : fallback;
+}
+
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const STATIC_DIR = path.resolve(__dirname, '..', 'dist');
+
+const RATE_LIMIT_WINDOW_MS = envInt('RATE_LIMIT_WINDOW_MS', 60_000);
+const RATE_LIMIT_MAX = envInt('RATE_LIMIT_MAX', 300);
+const LOGIN_RATE_LIMIT_MAX = envInt('LOGIN_RATE_LIMIT_MAX', 10);
+const TRUST_PROXY = (process.env.TRUST_PROXY || '').trim();
 
 const AUTH_METHOD = (process.env.AUTH_METHOD || 'none').toLowerCase();
 const ACCOUNT_LOGIN = process.env.ACCOUNT_LOGIN || '';
@@ -37,6 +48,35 @@ setInterval(() => {
 
 const app = express();
 app.disable('x-powered-by');
+
+if (TRUST_PROXY) {
+  // A plain number means "trust N proxy hops"; anything else is parsed by express
+  // as a comma-separated list of IPs/CIDRs (e.g. "loopback, linklocal, uniquelocal").
+  app.set('trust proxy', /^\d+$/.test(TRUST_PROXY) ? parseInt(TRUST_PROXY, 10) : TRUST_PROXY);
+}
+
+// Throttle every route, including the static assets and the SPA fallback below,
+// so unauthenticated clients cannot exhaust the server with filesystem reads.
+const limiter = rateLimit({
+  windowMs: RATE_LIMIT_WINDOW_MS,
+  limit: RATE_LIMIT_MAX,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: { error: 'rate-limited' },
+  validate: { xForwardedForHeader: false }
+});
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: LOGIN_RATE_LIMIT_MAX,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  skipSuccessfulRequests: true,
+  message: { error: 'rate-limited' },
+  validate: { xForwardedForHeader: false }
+});
+
+app.use(limiter);
 app.use(express.json({ limit: '2mb' }));
 app.use(cookieParser(SESSION_SECRET));
 
@@ -91,7 +131,7 @@ app.get('/api/auth/me', (req, res) => {
   res.json({ authenticated: true, user: sess.user });
 });
 
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', loginLimiter, async (req, res) => {
   if (AUTH_METHOD !== 'account') return res.status(400).json({ error: 'wrong-method' });
   if (!ACCOUNT_LOGIN || !ACCOUNT_PASSWORD) return res.status(500).json({ error: 'account-not-configured' });
 

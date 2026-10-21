@@ -86,13 +86,19 @@ shell. With Docker Compose they are read from `docker/.env` (see `docker/.env.ex
 | `KEYCLOAK_REDIRECT_URI` | empty | Public base URL of this app. The callback registered in Keycloak is this value plus `/api/auth/keycloak/callback`. |
 | `KEYCLOAK_EMAIL_ACCOUNT` | empty | Account label shown as signed in after Keycloak login. |
 | `SESSION_SECRET` | random | Secret used to sign the session cookie. Generate one with `openssl rand -hex 32`; when unset, a random secret is created at startup and sessions do not survive a restart. |
+| `RATE_LIMIT_WINDOW_MS` | `60000` | Length of the rate limiting window, in milliseconds, per client IP. |
+| `RATE_LIMIT_MAX` | `300` | Maximum requests per client IP per window. Applied to every route: API, static assets and the SPA fallback. |
+| `LOGIN_RATE_LIMIT_MAX` | `10` | Failed `POST /api/auth/login` attempts allowed per client IP per 15-minute window. Successful logins are not counted. |
+| `TRUST_PROXY` | empty | Value for Express's `trust proxy` setting: a hop count such as `1`, or a list such as `loopback, linklocal`. Set it when the app runs behind a reverse proxy. |
 | `DOMAIN` | empty | Informational only, read by the reverse proxy template, not by the app. |
 
 ## Security notes
 
+- All routes are rate-limited with `express-rate-limit` using its in-memory store: counters reset when the process restarts and are not shared between replicas. Multi-instance deployments should use a shared store or an edge limiter.
 - `npm audit` reports no known vulnerabilities. The `proxy-addr` IP-spoofing advisory (GHSA-jqcg-44mw-7w3h) is fixed by
   `proxy-addr@2.0.8`, and `express@4.22.3` brings in `body-parser@1.20.8` and `qs@6.16.1`.
 - The server does not enable Express `trust proxy`. If you deploy behind a reverse proxy and need real client IPs,
-  enable `trust proxy` explicitly for your proxy's address ranges instead of turning it on globally.
+  set `TRUST_PROXY` to that proxy's hop count or address ranges instead of turning it on globally; otherwise every
+  client is rate-limited under the proxy's IP.
 - Tailwind CSS v4 output requires Safari 16.4+, Chrome 111+ or Firefox 128+.
 

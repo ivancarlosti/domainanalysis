@@ -23,7 +23,7 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ domains, language }) => {
   const currentDomains = domains.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden mb-12 transition-colors duration-200">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xs border border-gray-200 dark:border-gray-700 overflow-hidden mb-12 transition-colors duration-200">
       <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center flex-wrap gap-4">
         <h3 className="text-xl text-gray-700 dark:text-gray-100 font-normal">{t.results.title}</h3>
       </div>
@@ -65,7 +65,7 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ domains, language }) => {
             <button
                 onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="px-3 py-1 rounded-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
                 {t.results.prev}
             </button>
@@ -73,7 +73,7 @@ const ResultsTable: React.FC<ResultsTableProps> = ({ domains, language }) => {
             <button
                 onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="px-3 py-1 rounded-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 disabled:opacity-50 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
                 {t.results.next}
             </button>

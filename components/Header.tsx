@@ -18,27 +18,27 @@ const Header: React.FC<HeaderProps> = ({ currentDate, isDarkMode, toggleTheme, l
   const showLogout = config.authMethod !== 'none';
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
+    <div className="bg-white dark:bg-gray-800 shadow-xs border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
       {/* Top Bar */}
       <div className="bg-gray-50 dark:bg-gray-900 px-6 py-2 flex justify-between items-center text-xs border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2">
           <button 
             onClick={() => setLanguage('en-US')}
-            className={`px-2 py-1 rounded flex items-center gap-1 transition-colors ${language === 'en-US' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
+            className={`px-2 py-1 rounded-sm flex items-center gap-1 transition-colors ${language === 'en-US' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
             title="English (US)"
           >
             <img src="https://flagcdn.com/w20/us.png" srcSet="https://flagcdn.com/w40/us.png 2x" width="20" height="15" alt="US" className="rounded-sm" /> <span className="hidden sm:inline">English</span>
           </button>
           <button 
             onClick={() => setLanguage('pt-BR')}
-            className={`px-2 py-1 rounded flex items-center gap-1 transition-colors ${language === 'pt-BR' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
+            className={`px-2 py-1 rounded-sm flex items-center gap-1 transition-colors ${language === 'pt-BR' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
             title="Português (BR)"
           >
             <img src="https://flagcdn.com/w20/br.png" srcSet="https://flagcdn.com/w40/br.png 2x" width="20" height="15" alt="BR" className="rounded-sm" /> <span className="hidden sm:inline">Português</span>
           </button>
           <button 
             onClick={() => setLanguage('es-MX')}
-            className={`px-2 py-1 rounded flex items-center gap-1 transition-colors ${language === 'es-MX' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
+            className={`px-2 py-1 rounded-sm flex items-center gap-1 transition-colors ${language === 'es-MX' ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300' : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'}`}
             title="Español (MX)"
           >
             <img src="https://flagcdn.com/w20/mx.png" srcSet="https://flagcdn.com/w40/mx.png 2x" width="20" height="15" alt="MX" className="rounded-sm" /> <span className="hidden sm:inline">Español</span>
@@ -48,17 +48,17 @@ const Header: React.FC<HeaderProps> = ({ currentDate, isDarkMode, toggleTheme, l
         <div className="flex items-center gap-2">
           <button 
             onClick={toggleTheme}
-            className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition-colors"
+            className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-sm transition-colors"
           >
             {isDarkMode ? <Sun size={12} /> : <Moon size={12} />} {t.theme}
           </button>
-          <a href="https://registro.br/tecnologia/ferramentas/whois/" target="_blank" rel="noreferrer" className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition-colors">
+          <a href="https://registro.br/tecnologia/ferramentas/whois/" target="_blank" rel="noreferrer" className="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-sm transition-colors">
             <ExternalLink size={12} /> {t.whois}
           </a>
           {showLogout && (
             <button
               onClick={logout}
-              className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors"
+              className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-sm transition-colors"
             >
               <LogOut size={12} /> {t.exit}
             </button>

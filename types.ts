@@ -2,7 +2,6 @@ export interface DomainEntry {
   name: string;
   length: number;
   hasNumbers: boolean;
-  hasHyphen: boolean;
   extension: string;
 }
 

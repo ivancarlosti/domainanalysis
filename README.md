@@ -18,6 +18,23 @@ This contains everything you need to run your app locally.
 - npm 10 or newer
 - Docker + Docker Compose (only for the container image)
 
+## Screenshots
+
+| Home (light) | Filters and results |
+| --- | --- |
+| ![Home screen in light theme](docs/screenshots/01-home-light.png) | ![Filters applied and results table](docs/screenshots/02-filters-results.png) |
+
+| Dark theme | English UI |
+| --- | --- |
+| ![Dark theme](docs/screenshots/03-dark-mode.png) | ![English UI](docs/screenshots/04-english.png) |
+
+| Account login | Keycloak login | Mobile |
+| --- | --- | --- |
+| ![Account login](docs/screenshots/05-login-account.png) | ![Keycloak login](docs/screenshots/06-login-keycloak.png) | ![Mobile layout](docs/screenshots/07-mobile.png) |
+
+The screenshots were captured from a production build using the built-in sample domain list. See
+[docs/screenshots/README.md](docs/screenshots/README.md) for what each image shows and how to reproduce them.
+
 ## Run Locally
 
 1. Install dependencies:

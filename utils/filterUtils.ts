@@ -30,7 +30,6 @@ export const parseDomains = (text: string): DomainEntry[] => {
       name: cleanLine,
       length: name.length,
       hasNumbers: /\d/.test(name),
-      hasHyphen: /-/.test(name),
       extension: extension
     });
   }

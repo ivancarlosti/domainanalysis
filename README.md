@@ -101,4 +101,3 @@ shell. With Docker Compose they are read from `docker/.env` (see `docker/.env.ex
   set `TRUST_PROXY` to that proxy's hop count or address ranges instead of turning it on globally; otherwise every
   client is rate-limited under the proxy's IP.
 - Tailwind CSS v4 output requires Safari 16.4+, Chrome 111+ or Firefox 128+.
-

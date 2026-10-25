@@ -96,7 +96,8 @@ shell. With Docker Compose they are read from `docker/.env` (see `docker/.env.ex
 
 - All routes are rate-limited with `express-rate-limit` using its in-memory store: counters reset when the process restarts and are not shared between replicas. Multi-instance deployments should use a shared store or an edge limiter.
 - `npm audit` reports no known vulnerabilities. The `proxy-addr` IP-spoofing advisory (GHSA-jqcg-44mw-7w3h) is fixed by
-  `proxy-addr@2.0.8`, and `express@4.22.3` brings in `body-parser@1.20.8` and `qs@6.16.1`.
+  `proxy-addr@2.0.8`, and the `body-parser` DoS advisory (GHSA-27r3-jxmh-p828) by `body-parser@1.20.9`;
+  `express@4.22.3` brings in both, together with `qs@6.16.1`.
 - The server does not enable Express `trust proxy`. If you deploy behind a reverse proxy and need real client IPs,
   set `TRUST_PROXY` to that proxy's hop count or address ranges instead of turning it on globally; otherwise every
   client is rate-limited under the proxy's IP.
